@@ -73,7 +73,7 @@ async function postChirp(chirp) {
     },
   };
 
-  const res = await ddb.put(params).promise();
+  await ddb.put(params).promise();
   return Promise.resolve(buildResponse(200, 'Chirp posted'));
 }
 
@@ -106,7 +106,7 @@ async function unlikeChirp(timestamp, username) {
 
     ReturnValues: 'UPDATED_NEW',
   };
-  const res = await ddb.update(params).promise();
+  await ddb.update(params).promise();
   return Promise.resolve(buildResponse(200, 'Chirp unliked.'));
 }
 
@@ -122,7 +122,7 @@ async function postComment(timestamp, comment) {
     ReturnValues: 'UPDATED_NEW',
   };
 
-  const res = await ddb.update(params).promise();
+  await ddb.update(params).promise();
   return Promise.resolve(buildResponse(200, 'Comment posted.'));
 }
 
