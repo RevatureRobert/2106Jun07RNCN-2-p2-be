@@ -5,7 +5,9 @@ const docClient = new dynamodb.DocumentClient();
 const likePath = "/like/{timestamp}/{username}";
 const unlikePath = "/unlike/{timestamp}/{username}";
 
-// main handler for chirper-chirps
+/**
+ * MAIN HANDLER
+ */
 exports.chirperLikesHandler = async (event) => {
   console.info('received:', event);
   if (event.httpMethod === 'PUT' && event.resource === likePath) {
@@ -52,6 +54,9 @@ async function unlikeChirp(timestamp, username){
      return Promise.resolve(buildResponse(200, 'Chirp unliked.'));
  }
 
+ /**
+ * RESPONSE BUILDER FOR LAMBDA PROXY
+ */
  function buildResponse(statusCode, body){
     return {
         statusCode: statusCode,

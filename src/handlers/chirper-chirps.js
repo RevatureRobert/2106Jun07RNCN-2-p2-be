@@ -2,7 +2,9 @@ const dynamodb = require('aws-sdk/clients/dynamodb');
 const tableName = process.env.TABLE;
 const docClient = new dynamodb.DocumentClient();
 
-// main handler for chirper-chirps
+/**
+ * MAIN HANDLER
+ */
 exports.chirperChirpsHandler = async (event) => {
   console.info('received:', event);
   if (event.httpMethod === 'GET') {
@@ -62,6 +64,9 @@ async function postChirp(chirp){
   return Promise.resolve(buildResponse(200, 'Chirp has been deleted.'));
 }
 
+/**
+ * RESPONSE BUILDER FOR LAMBDA PROXY
+ */
 function buildResponse(statusCode, body){
   return {
       statusCode: statusCode,

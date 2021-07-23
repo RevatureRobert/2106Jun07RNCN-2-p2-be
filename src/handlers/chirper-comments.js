@@ -5,7 +5,9 @@ const docClient = new dynamodb.DocumentClient();
 const commentsPath = "/{timestamp}/comments"
 const deleteCommentPath = "/{timestamp}/comments/{cmttimestamp}"
 
-// main handler for chirper-chirps
+/**
+ * MAIN HANDLER
+ */
 exports.chirperCommentsHandler = async (event) => {
   console.info('received:', event);
   if (event.httpMethod === 'PUT' && event.resource === commentsPath) {
@@ -70,6 +72,9 @@ async function deleteComment(timestamp, cmtTimestamp){
     return Promise.resolve(buildResponse(200, 'Comment has been deleted.'));
 }
 
+/**
+ * RESPONSE BUILDER FOR LAMBDA PROXY
+ */
 function buildResponse(statusCode, body){
     return {
         statusCode: statusCode,
