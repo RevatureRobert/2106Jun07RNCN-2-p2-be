@@ -90,6 +90,11 @@ Resources:
           TABLE: 
             !Ref chirper
       Events:
+        GetComment:
+          Type: Api
+          Properties:
+            Path: /{timestamp}/comments
+            Method: GET
         PostComment:
           Type: Api
           Properties:

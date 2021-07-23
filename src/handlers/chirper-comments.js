@@ -14,13 +14,32 @@ exports.chirperCommentsHandler = async (event) => {
     return postComment(event.pathParameters.timestamp, JSON.parse(event.body));
   } else if (event.httpMethod === 'DELETE' && event.resource === deleteCommentPath) {
     return deleteComment(event.pathParameters.timestamp, event.pathParameters.cmttimestamp);
+  } else if (event.httpMethod === 'GET' && event.resource === commentsPath) {
+    return getComments(event.pathParameters.timestamp);
   }
 };
 
 /**
  * GET COMMENTS TO FIND INDEX ON DELETE 
  */
-async function getComments(timestamp){
+ async function getComments(timestamp){
+    const params = {
+       TableName: tableName,
+       Key: {"timestamp": timestamp},
+       KeyConditionExpression: "#timestamp = :timestamp",
+       ExpressionAttributeNames: { "#timestamp": "timestamp" },
+       ExpressionAttributeValues: { ":timestamp": timestamp },
+       ProjectionExpression: "comments"
+   }
+   
+   const chirp = await docClient.query(params, []).promise();
+   return Promise.resolve(buildResponse(200, chirp));
+}
+
+/**
+ * GET COMMENTS TO FIND INDEX ON DELETE 
+ */
+async function getComment(timestamp){
     const params = {
        TableName: tableName,
        Key: {"timestamp": timestamp},
@@ -56,7 +75,7 @@ async function postComment(timestamp, comment){
  * DELETE COMMENT
  */
 async function deleteComment(timestamp, cmtTimestamp){
-    const comments = await getComments(timestamp);
+    const comments = await getComment(timestamp);
     const index = comments.findIndex(x => x.timestamp === cmtTimestamp);
     
     const params = {
