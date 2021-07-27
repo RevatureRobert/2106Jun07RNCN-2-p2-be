@@ -1,19 +1,25 @@
-const chirpsHandler = require('../src/handlers/chirper-chirps.js');
-const chirps = chirpsHandler.chirperChirpsHandler;
+const chirpHandler = require('../src/handlers/chirper-chirps');
+const chirp = chirpHandler.chirperChirpsHandler;
+const dynamodb = require('aws-sdk/clients/dynamodb');
+const docClient = new dynamodb.DocumentClient();
 
-it('puts a chirp', () => {
-  let newChirpBody = {
-    userImg: 'no',
-    username: 'jester',
-    body: 'This should never, ever be seen by anybody ever.',
-    timestamp: 'yesterday',
-    media: 'yes'
-  };
+const testChirp = {
+  userImg: 'no',
+  username: 'jester',
+  body: 'Enzyme sucks',
+  timestamp: 'now',
+  comments: [],
+  likes: docClient.createSet([' ']),
+  media: 'yes'
+};
 
-  chirps({
+it('should post a chirp', async () => {
+  await chirp({
     httpMethod: 'POST',
-    body: newChirpBody
+    body: JSON.stringify(testChirp)
   });
 
-  expect(chirps({ httpMethod: 'GET' })).toContain(newChirpBody);
+  const res = await chirp({ httpMethod: 'GET' });
+
+  expect(JSON.parse(res.body)[0].body).toEqual(testChirp.body);
 });

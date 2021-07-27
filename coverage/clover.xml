@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1627419574338" clover="3.2.0">
+  <project timestamp="1627419574338" name="All files">
+    <metrics statements="72" coveredstatements="21" conditionals="32" coveredconditionals="8" methods="16" coveredmethods="4" elements="120" coveredelements="33" complexity="0" loc="72" ncloc="72" packages="1" files="3" classes="3"/>
+    <file name="chirper-chirps.js" path="/Users/marcski55/Documents/GitHub/2106Jun07RNCN-2-p2-be/src/handlers/chirper-chirps.js">
+      <metrics statements="26" coveredstatements="21" conditionals="12" coveredconditionals="8" methods="5" coveredmethods="4"/>
+      <line num="1" count="1" type="stmt"/>
+      <line num="2" count="1" type="stmt"/>
+      <line num="3" count="1" type="cond" truecount="2" falsecount="0"/>
+      <line num="5" count="1" type="stmt"/>
+      <line num="14" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="15" count="1" type="stmt"/>
+      <line num="18" count="1" type="stmt"/>
+      <line num="23" count="1" type="stmt"/>
+      <line num="24" count="2" type="stmt"/>
+      <line num="25" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="26" count="1" type="stmt"/>
+      <line num="27" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="28" count="1" type="stmt"/>
+      <line num="29" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="30" count="0" type="stmt"/>
+      <line num="38" count="1" type="stmt"/>
+      <line num="41" count="1" type="stmt"/>
+      <line num="42" count="1" type="stmt"/>
+      <line num="43" count="1" type="stmt"/>
+      <line num="50" count="1" type="stmt"/>
+      <line num="62" count="1" type="stmt"/>
+      <line num="63" count="1" type="stmt"/>
+      <line num="70" count="0" type="stmt"/>
+      <line num="78" count="0" type="stmt"/>
+      <line num="79" count="0" type="stmt"/>
+      <line num="86" count="2" type="stmt"/>
+    </file>
+    <file name="chirper-comments.js" path="/Users/marcski55/Documents/GitHub/2106Jun07RNCN-2-p2-be/src/handlers/chirper-comments.js">
+      <metrics statements="28" coveredstatements="0" conditionals="12" coveredconditionals="0" methods="7" coveredmethods="0"/>
+      <line num="1" count="0" type="stmt"/>
+      <line num="2" count="0" type="stmt"/>
+      <line num="3" count="0" type="stmt"/>
+      <line num="5" count="0" type="stmt"/>
+      <line num="6" count="0" type="stmt"/>
+      <line num="11" count="0" type="stmt"/>
+      <line num="12" count="0" type="stmt"/>
+      <line num="13" count="0" type="cond" truecount="0" falsecount="4"/>
+      <line num="14" count="0" type="stmt"/>
+      <line num="15" count="0" type="cond" truecount="0" falsecount="4"/>
+      <line num="16" count="0" type="stmt"/>
+      <line num="17" count="0" type="cond" truecount="0" falsecount="4"/>
+      <line num="18" count="0" type="stmt"/>
+      <line num="26" count="0" type="stmt"/>
+      <line num="35" count="0" type="stmt"/>
+      <line num="36" count="0" type="stmt"/>
+      <line num="43" count="0" type="stmt"/>
+      <line num="52" count="0" type="stmt"/>
+      <line num="53" count="0" type="stmt"/>
+      <line num="60" count="0" type="stmt"/>
+      <line num="70" count="0" type="stmt"/>
+      <line num="71" count="0" type="stmt"/>
+      <line num="78" count="0" type="stmt"/>
+      <line num="79" count="0" type="stmt"/>
+      <line num="81" count="0" type="stmt"/>
+      <line num="90" count="0" type="stmt"/>
+      <line num="91" count="0" type="stmt"/>
+      <line num="98" count="0" type="stmt"/>
+    </file>
+    <file name="chirper-likes.js" path="/Users/marcski55/Documents/GitHub/2106Jun07RNCN-2-p2-be/src/handlers/chirper-likes.js">
+      <metrics statements="18" coveredstatements="0" conditionals="8" coveredconditionals="0" methods="4" coveredmethods="0"/>
+      <line num="1" count="0" type="stmt"/>
+      <line num="2" count="0" type="stmt"/>
+      <line num="3" count="0" type="stmt"/>
+      <line num="5" count="0" type="stmt"/>
+      <line num="6" count="0" type="stmt"/>
+      <line num="11" count="0" type="stmt"/>
+      <line num="12" count="0" type="stmt"/>
+      <line num="13" count="0" type="cond" truecount="0" falsecount="4"/>
+      <line num="14" count="0" type="stmt"/>
+      <line num="15" count="0" type="cond" truecount="0" falsecount="4"/>
+      <line num="16" count="0" type="stmt"/>
+      <line num="24" count="0" type="stmt"/>
+      <line num="34" count="0" type="stmt"/>
+      <line num="35" count="0" type="stmt"/>
+      <line num="42" count="0" type="stmt"/>
+      <line num="53" count="0" type="stmt"/>
+      <line num="54" count="0" type="stmt"/>
+      <line num="61" count="0" type="stmt"/>
+    </file>
+  </project>
+</coverage>

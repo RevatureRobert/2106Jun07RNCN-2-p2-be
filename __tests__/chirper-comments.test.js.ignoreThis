@@ -1,0 +1,3 @@
+const chirpHandler = require('../src/handlers/chirper-comments');
+const chirp = chirpHandler.chirperCommentsHandler;
+
