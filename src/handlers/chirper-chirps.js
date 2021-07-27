@@ -9,9 +9,9 @@ exports.chirperChirpsHandler = async (event) => {
   console.info('received:', event);
   if (event.httpMethod === 'GET') {
     return getAllChirps();
-  } else if (event.httpMethod === 'POST'){
+  } else if (event.httpMethod === 'POST') {
     return postChirp(JSON.parse(event.body));
-  } else if (event.httpMethod === 'DELETE'){
+  } else if (event.httpMethod === 'DELETE') {
     return deleteChirp(event.pathParameters.timestamp);
   }
 };
@@ -19,9 +19,9 @@ exports.chirperChirpsHandler = async (event) => {
 /**
  * GET ALL CHIRPS
  */
-async function getAllChirps(){
+async function getAllChirps() {
   var params = {
-    TableName: tableName,
+    TableName: tableName
   };
   const data = await docClient.scan(params).promise();
   const items = data.Items;
@@ -31,19 +31,19 @@ async function getAllChirps(){
 /**
  * POST A CHIRP
  */
-async function postChirp(chirp){
+async function postChirp(chirp) {
   const params = {
-      TableName: tableName,
-      Item: {
-          userImg: chirp.userImg,
-          username: chirp.username,
-          body: chirp.body,
-          timestamp: chirp.timestamp,
-          likes: docClient.createSet([' ']),
-          comments: [],
-          media: chirp.media,
-      },
-  }
+    TableName: tableName,
+    Item: {
+      userImg: chirp.userImg,
+      username: chirp.username,
+      body: chirp.body,
+      timestamp: chirp.timestamp,
+      likes: docClient.createSet([' ']),
+      comments: [],
+      media: chirp.media
+    }
+  };
   await docClient.put(params).promise();
   return Promise.resolve(buildResponse(200, 'Chirp posted'));
 }
@@ -51,15 +51,15 @@ async function postChirp(chirp){
 /**
  * DELETE A CHIRP
  */
- async function deleteChirp(timestamp){
+async function deleteChirp(timestamp) {
   const params = {
-      TableName: tableName,
-      Key: {"timestamp": timestamp },
-      ConditionExpression: '#timestamp = :timestamp',
-      ExpressionAttributeNames: {"#timestamp": "timestamp"},
-      ExpressionAttributeValues: {":timestamp": timestamp }
-  }
-      
+    TableName: tableName,
+    Key: { timestamp: timestamp },
+    ConditionExpression: '#timestamp = :timestamp',
+    ExpressionAttributeNames: { '#timestamp': 'timestamp' },
+    ExpressionAttributeValues: { ':timestamp': timestamp }
+  };
+
   await docClient.delete(params).promise();
   return Promise.resolve(buildResponse(200, 'Chirp has been deleted.'));
 }
@@ -67,15 +67,15 @@ async function postChirp(chirp){
 /**
  * RESPONSE BUILDER FOR LAMBDA PROXY
  */
-function buildResponse(statusCode, body){
+function buildResponse(statusCode, body) {
   return {
-      statusCode: statusCode,
-      headers: {
-          'Access-Control-Allow-Origin': '*', 
-          'Access-Control-Allow-Headers': '*', 
-          'Access-Control-Allow-Methods': '*',
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body)
-  }
+    statusCode: statusCode,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': '*',
+      'Access-Control-Allow-Methods': '*',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  };
 }
