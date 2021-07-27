@@ -1,5 +1,20 @@
+const AWS = require('aws-sdk');
 const dynamodb = require('aws-sdk/clients/dynamodb');
-const tableName = process.env.TABLE;
+const tableName = process.env.TABLE || 'chirper';
+
+const config_test = {
+  convertEmptyValues: true,
+  ...(process.env.MOCK_DYNAMODB_ENDPOINT && {
+    endpoint: process.env.MOCK_DYNAMODB_ENDPOINT,
+    sslEnabled: false,
+    region: "local",
+  }),
+}
+
+if (process.env.NODE_ENV === 'test') {
+  AWS.config.update(config_test);
+}
+
 const docClient = new dynamodb.DocumentClient();
 
 /**
