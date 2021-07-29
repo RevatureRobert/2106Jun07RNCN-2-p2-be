@@ -18,15 +18,23 @@ it('should post a chirp', async (done) => {
 
   expect(JSON.parse(res.body)[0].body).toEqual(testChirp.body);
 
+  res = await chirp({ 
+    httpMethod: 'GET',
+    resource: chirpPath,
+    pathParameters: {timestamp: 'now'},
+  });
+  
   await chirp({ 
     httpMethod: 'DELETE',
     pathParameters: { timestamp: 'now' },
     resource: chirpPath,
   });
+
   res = await chirp({ 
     httpMethod: 'GET',
     resource: chirpsPath,
   });
+
   expect(JSON.parse(res.body)[0]).toBeUndefined();
 
   done();
