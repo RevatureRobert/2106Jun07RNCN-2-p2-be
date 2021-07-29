@@ -59,8 +59,8 @@ async function getChirp(timestamp) {
   };
 
   const data = await docClient.query(params).promise();
-  const item = data.Item;
-  return buildResponse(200, item);
+  const items = data.Items;
+  return buildResponse(200, items);
 }
 
 /**
