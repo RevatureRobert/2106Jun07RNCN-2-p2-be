@@ -26,17 +26,21 @@ Resources:
       MemorySize: 128
       Timeout: 100
       Description: A handler that handles all functions related to chirps
-      Policies: 
-      - AmazonDynamoDBFullAccess
+      Policies:
+        - AmazonDynamoDBFullAccess
       Environment:
         Variables:
-          TABLE: 
-            !Ref chirper
+          TABLE: !Ref chirper
       Events:
-        GetChirp:
+        GetChirps:
           Type: Api
           Properties:
             Path: /
+            Method: GET
+        GetChirp:
+          Type: Api
+          Properties:
+            Path: /{timestamp}
             Method: GET
         PostChirp:
           Type: Api
@@ -57,12 +61,11 @@ Resources:
       MemorySize: 128
       Timeout: 100
       Description: A handler that handles all functions related to liking chirps
-      Policies: 
-      - AmazonDynamoDBFullAccess
+      Policies:
+        - AmazonDynamoDBFullAccess
       Environment:
         Variables:
-          TABLE: 
-            !Ref chirper
+          TABLE: !Ref chirper
       Events:
         LikeChirp:
           Type: Api
@@ -75,7 +78,7 @@ Resources:
             Path: /unlike/{timestamp}/{username}
             Method: PUT
 
-  chirperCommentsFucntion:
+  chirperCommentsFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: src/handlers/chirper-comments.chirperCommentsHandler
@@ -83,12 +86,11 @@ Resources:
       MemorySize: 128
       Timeout: 100
       Description: A handler that handles all functions related to comments in chirps
-      Policies: 
-      - AmazonDynamoDBFullAccess
+      Policies:
+        - AmazonDynamoDBFullAccess
       Environment:
         Variables:
-          TABLE: 
-            !Ref chirper
+          TABLE: !Ref chirper
       Events:
         GetComment:
           Type: Api

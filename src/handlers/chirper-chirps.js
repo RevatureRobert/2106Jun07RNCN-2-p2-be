@@ -7,26 +7,30 @@ const config_test = {
   ...(process.env.MOCK_DYNAMODB_ENDPOINT && {
     endpoint: process.env.MOCK_DYNAMODB_ENDPOINT,
     sslEnabled: false,
-    region: "local",
+    region: 'local',
   }),
-}
+};
 
 if (process.env.NODE_ENV === 'test') {
   AWS.config.update(config_test);
 }
 
 const docClient = new dynamodb.DocumentClient();
+const chirpsPath = '/';
+const chirpPath = '/{timestamp}';
 
 /**
  * MAIN HANDLER
  */
 exports.chirperChirpsHandler = async (event) => {
   console.info('received:', event);
-  if (event.httpMethod === 'GET') {
+  if (event.httpMethod === 'GET' && event.resource === chirpsPath) {
     return getAllChirps();
-  } else if (event.httpMethod === 'POST') {
+  } else if (event.httpMethod === 'GET' && event.resource === chirpPath) {
+    return getChirp(event.pathParameters.timestamp);
+  } else if (event.httpMethod === 'POST' && event.resource === chirpsPath) {
     return postChirp(JSON.parse(event.body));
-  } else if (event.httpMethod === 'DELETE') {
+  } else if (event.httpMethod === 'DELETE' && event.resource === chirpPath) {
     return deleteChirp(event.pathParameters.timestamp);
   }
 };
@@ -36,11 +40,27 @@ exports.chirperChirpsHandler = async (event) => {
  */
 async function getAllChirps() {
   var params = {
-    TableName: tableName
+    TableName: tableName,
   };
   const data = await docClient.scan(params).promise();
   const items = data.Items;
   return buildResponse(200, items);
+}
+
+/**
+ * GET A CHIRP
+ */
+async function getChirp(timestamp) {
+  var params = {
+    TableName: tableName,
+    KeyConditionExpression: '#timestamp = :timestamp',
+    ExpressionAttributeNames: { '#timestamp': 'timestamp' },
+    ExpressionAttributeValues: { ':timestamp': timestamp },
+  };
+
+  const data = await docClient.query(params).promise();
+  const item = data.Item;
+  return buildResponse(200, item);
 }
 
 /**
@@ -56,8 +76,8 @@ async function postChirp(chirp) {
       timestamp: chirp.timestamp,
       likes: docClient.createSet([' ']),
       comments: [],
-      media: chirp.media
-    }
+      media: chirp.media,
+    },
   };
   await docClient.put(params).promise();
   return Promise.resolve(buildResponse(200, 'Chirp posted'));
@@ -72,7 +92,7 @@ async function deleteChirp(timestamp) {
     Key: { timestamp: timestamp },
     ConditionExpression: '#timestamp = :timestamp',
     ExpressionAttributeNames: { '#timestamp': 'timestamp' },
-    ExpressionAttributeValues: { ':timestamp': timestamp }
+    ExpressionAttributeValues: { ':timestamp': timestamp },
   };
 
   await docClient.delete(params).promise();
@@ -89,8 +109,8 @@ function buildResponse(statusCode, body) {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Headers': '*',
       'Access-Control-Allow-Methods': '*',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   };
 }
