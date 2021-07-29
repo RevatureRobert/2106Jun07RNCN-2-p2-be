@@ -3,10 +3,15 @@ const comment =
   require('../src/handlers/chirper-comments').chirperCommentsHandler;
 const testChirp = require('./testChirp').testChirp;
 
+const chirpsPath = '/';
+const commentsPath = '/{timestamp}/comments';
+const deleteCommentPath = '/{timestamp}/comments/{cmttimestamp}';
+
 it('should comment on a chirp', async (done) => {
   await chirp({
     httpMethod: 'POST',
-    body: JSON.stringify(testChirp)
+    body: JSON.stringify(testChirp),
+    resource: chirpsPath,
   });
 
   const commentBody = [
@@ -20,7 +25,7 @@ it('should comment on a chirp', async (done) => {
 
   await comment({
     httpMethod: 'PUT',
-    resource: '/{timestamp}/comments',
+    resource: commentsPath,
     pathParameters: {
       timestamp: 'now'
     },
@@ -29,7 +34,7 @@ it('should comment on a chirp', async (done) => {
 
   let res = await comment({
     httpMethod: 'GET',
-    resource: '/{timestamp}/comments',
+    resource: commentsPath,
     pathParameters: {
       timestamp: 'now'
     }
@@ -41,13 +46,13 @@ it('should comment on a chirp', async (done) => {
 
   await comment({
     httpMethod: 'DELETE',
-    resource: '/{timestamp}/comments/{cmttimestamp}',
+    resource: deleteCommentPath,
     pathParameters: { timestamp: 'now', cmttimestamp: 'after now' }
   });
 
   res = await comment({
     httpMethod: 'GET',
-    resource: '/{timestamp}/comments',
+    resource: commentsPath,
     pathParameters: {
       timestamp: 'now'
     }

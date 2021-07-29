@@ -2,10 +2,14 @@ const chirp = require('../src/handlers/chirper-chirps').chirperChirpsHandler;
 const like = require('../src/handlers/chirper-likes').chirperLikesHandler;
 const testChirp = require('./testChirp').testChirp;
 
+const chirpPath = '/{timestamp}';
+const chirpsPath = '/';
+
 it('should like a chirp', async (done) => {
   await chirp({
     httpMethod: 'POST',
-    body: JSON.stringify(testChirp)
+    body: JSON.stringify(testChirp),
+    resource: chirpsPath,
   });
 
   await like({
@@ -18,7 +22,8 @@ it('should like a chirp', async (done) => {
   });
 
   let res = await chirp({
-    httpMethod: 'GET'
+    httpMethod: 'GET',
+    resource: chirpsPath,
   });
 
   expect(JSON.parse(res.body)[0].likes[1]).toMatch('jester III');
@@ -33,7 +38,8 @@ it('should like a chirp', async (done) => {
   });
 
   res = await chirp({
-    httpMethod: 'GET'
+    httpMethod: 'GET',
+    resource: chirpsPath,
   });
 
   expect(JSON.parse(res.body)[0].likes[1]).toBeUndefined();
