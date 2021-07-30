@@ -74,7 +74,7 @@ function buildResponse(statusCode, body) {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Headers': '*',
-      'Access-Control-Allow-Methods': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(body),
