@@ -1,6 +1,11 @@
 const dynamodb = require('aws-sdk/clients/dynamodb');
 const tableName = process.env.TABLE || 'chirper';
 const docClient = new dynamodb.DocumentClient();
+let express = require('express');
+let cors = require('cors');
+
+let app = express();
+app.use(cors());
 
 const likePath = '/like/{timestamp}/{username}';
 const unlikePath = '/unlike/{timestamp}/{username}';
@@ -32,9 +37,9 @@ async function likeChirp(timestamp, username) {
     Key: { timestamp: timestamp },
     UpdateExpression: 'ADD likes :likes',
     ExpressionAttributeValues: {
-      ':likes': docClient.createSet([username])
+      ':likes': docClient.createSet([username]),
     },
-    ReturnValues: 'UPDATED_NEW'
+    ReturnValues: 'UPDATED_NEW',
   };
 
   await docClient.update(params).promise();
@@ -50,10 +55,10 @@ async function unlikeChirp(timestamp, username) {
     Key: { timestamp: timestamp },
     UpdateExpression: 'DELETE likes :likes',
     ExpressionAttributeValues: {
-      ':likes': docClient.createSet([username])
+      ':likes': docClient.createSet([username]),
     },
 
-    ReturnValues: 'UPDATED_NEW'
+    ReturnValues: 'UPDATED_NEW',
   };
 
   await docClient.update(params).promise();
@@ -70,8 +75,8 @@ function buildResponse(statusCode, body) {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Headers': '*',
       'Access-Control-Allow-Methods': '*',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   };
 }

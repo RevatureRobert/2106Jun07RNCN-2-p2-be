@@ -1,6 +1,11 @@
 const AWS = require('aws-sdk');
 const dynamodb = require('aws-sdk/clients/dynamodb');
 const tableName = process.env.TABLE || 'chirper';
+let express = require('express');
+let cors = require('cors');
+
+let app = express();
+app.use(cors());
 
 const config_test = {
   convertEmptyValues: true,

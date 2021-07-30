@@ -1,9 +1,13 @@
 const dynamodb = require('aws-sdk/clients/dynamodb');
 const tableName = process.env.TABLE || 'chirper';
 const docClient = new dynamodb.DocumentClient();
-
 const commentsPath = '/{timestamp}/comments';
 const deleteCommentPath = '/{timestamp}/comments/{cmttimestamp}';
+let express = require('express');
+let cors = require('cors');
+
+let app = express();
+app.use(cors());
 
 /**
  * MAIN HANDLER
@@ -35,7 +39,7 @@ async function getComments(timestamp) {
     KeyConditionExpression: '#timestamp = :timestamp',
     ExpressionAttributeNames: { '#timestamp': 'timestamp' },
     ExpressionAttributeValues: { ':timestamp': timestamp },
-    ProjectionExpression: 'comments'
+    ProjectionExpression: 'comments',
   };
 
   const chirp = await docClient.query(params, []).promise();
@@ -52,7 +56,7 @@ async function getComment(timestamp) {
     KeyConditionExpression: '#timestamp = :timestamp',
     ExpressionAttributeNames: { '#timestamp': 'timestamp' },
     ExpressionAttributeValues: { ':timestamp': timestamp },
-    ProjectionExpression: 'comments'
+    ProjectionExpression: 'comments',
   };
 
   const chirp = await docClient.query(params, []).promise();
@@ -68,9 +72,9 @@ async function postComment(timestamp, comment) {
     Key: { timestamp: timestamp },
     UpdateExpression: 'SET comments = list_append(comments, :newComment)',
     ExpressionAttributeValues: {
-      ':newComment': comment
+      ':newComment': comment,
     },
-    ReturnValues: 'UPDATED_NEW'
+    ReturnValues: 'UPDATED_NEW',
   };
 
   await docClient.update(params).promise();
@@ -81,7 +85,7 @@ async function postComment(timestamp, comment) {
  * DELETE COMMENT
  */
 async function deleteComment(timestamp, cmtTimestamp) {
-  const comments = await getComment(timestamp);
+  const comments = await getComment(timestamp); //NOSONAR
   const index = comments.findIndex((x) => x.timestamp === cmtTimestamp);
 
   const params = {
@@ -90,7 +94,7 @@ async function deleteComment(timestamp, cmtTimestamp) {
     ConditionExpression: '#timestamp = :timestamp',
     UpdateExpression: `REMOVE comments[${index}]`,
     ExpressionAttributeNames: { '#timestamp': 'timestamp' },
-    ExpressionAttributeValues: { ':timestamp': timestamp }
+    ExpressionAttributeValues: { ':timestamp': timestamp },
   };
 
   await docClient.update(params).promise();
@@ -107,8 +111,8 @@ function buildResponse(statusCode, body) {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Headers': '*',
       'Access-Control-Allow-Methods': '*',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   };
 }
