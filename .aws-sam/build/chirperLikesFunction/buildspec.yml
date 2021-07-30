@@ -1,0 +1,16 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: 12
+    commands:
+      - echo Installing source NPM dependencies...
+      - npm install
+  pre_build:
+    commands:
+      - echo Testing...
+      - npm run test
+  build:
+    commands:
+      - sam build
+      - sam deploy --no-confirm-changeset --no-fail-on-empty-changeset

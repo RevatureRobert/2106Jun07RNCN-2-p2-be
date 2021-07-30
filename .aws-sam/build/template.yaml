@@ -1,31 +1,8 @@
-# This is the SAM template that represents the architecture of your serverless application
-# https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-template-basics.html
-
-# The AWSTemplateFormatVersion identifies the capabilities of the template
-# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/format-version-structure.html
 AWSTemplateFormatVersion: 2010-09-09
-Description: >-
-  chirper-native-be
-
-# Transform section specifies one or more macros that AWS CloudFormation uses to process your template
-# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/transform-section-structure.html
+Description: chirper-native-be
 Transform:
-  - AWS::Serverless-2016-10-31
-
-# Resources declares the AWS resources that you want to include in the stack
-# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html
-Globals:
-  Api:
-    Cors:
-      AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
-      AllowHeaders: "'content-type'"
-      AllowOrigin: "'*'"
-      AllowCredentials: "'*'"
-
+- AWS::Serverless-2016-10-31
 Resources:
-  # Each Lambda function is defined by properties:
-  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-
   chirperChirpsFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -35,10 +12,11 @@ Resources:
       Timeout: 100
       Description: A handler that handles all functions related to chirps
       Policies:
-        - AmazonDynamoDBFullAccess
+      - AmazonDynamoDBFullAccess
       Environment:
         Variables:
-          TABLE: !Ref chirper
+          TABLE:
+            Ref: chirper
       Events:
         GetChirps:
           Type: Api
@@ -60,7 +38,7 @@ Resources:
           Properties:
             Path: /{timestamp}
             Method: DELETE
-
+      CodeUri: chirperChirpsFunction
   chirperLikesFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -70,10 +48,11 @@ Resources:
       Timeout: 100
       Description: A handler that handles all functions related to liking chirps
       Policies:
-        - AmazonDynamoDBFullAccess
+      - AmazonDynamoDBFullAccess
       Environment:
         Variables:
-          TABLE: !Ref chirper
+          TABLE:
+            Ref: chirper
       Events:
         LikeChirp:
           Type: Api
@@ -85,7 +64,7 @@ Resources:
           Properties:
             Path: /unlike/{timestamp}/{username}
             Method: PUT
-
+      CodeUri: chirperLikesFunction
   chirperCommentsFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -95,10 +74,11 @@ Resources:
       Timeout: 100
       Description: A handler that handles all functions related to comments in chirps
       Policies:
-        - AmazonDynamoDBFullAccess
+      - AmazonDynamoDBFullAccess
       Environment:
         Variables:
-          TABLE: !Ref chirper
+          TABLE:
+            Ref: chirper
       Events:
         GetComment:
           Type: Api
@@ -115,8 +95,7 @@ Resources:
           Properties:
             Path: /{timestamp}/comments/{cmttimestamp}
             Method: DELETE
-
-  # DynamoDB table to store item: {id: &lt;ID&gt;, name: &lt;NAME&gt;}
+      CodeUri: chirperCommentsFunction
   chirper:
     Type: AWS::Serverless::SimpleTable
     Properties:
@@ -126,8 +105,8 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
-
 Outputs:
   WebEndpoint:
-    Description: 'API Gateway endpoint URL for Prod stage'
-    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/'
+    Description: API Gateway endpoint URL for Prod stage
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/
