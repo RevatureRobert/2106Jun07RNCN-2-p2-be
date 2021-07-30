@@ -119,16 +119,6 @@ Resources:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
 
-  # Enable CORS on API Gateway
-  ApiGatewayApi:
-    Type: AWS::Serverless::Api
-    Properties:
-      StageName: Prod
-      Cors:
-        AllowMethods: "'POST, GET, PUT, DELETE'"
-        AllowHeaders: "'*'"
-        AllowOrigin: "'*'"
-
 Outputs:
   WebEndpoint:
     Description: 'API Gateway endpoint URL for Prod stage'
